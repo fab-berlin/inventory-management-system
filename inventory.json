@@ -1,0 +1,31 @@
+{
+    "updated": "14.03.2026",
+    "location": "Wustrow",
+    "rooms": [
+        {
+            "name": "HWR",
+            "inventory": [
+                {
+                    "name": "Kaffee",
+                    "quantity": "wenig/mittel/viel/Anzahl",
+                    "remarks": "ist schon was älter, kann gerne ersetzt werden"
+                },
+                {
+                    "name": "Filtertüten",
+                    "quantity": "15",
+                    "remarks": ""
+                }
+            ]
+        },
+        {
+            "name": "Schlafzimmer",
+            "inventory": [
+                {
+                    "name": "Sodareiniger",
+                    "quantity": "halbvoll",
+                    "remarks": ""
+                }
+            ]
+        }
+    ]
+}
