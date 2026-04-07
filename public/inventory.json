@@ -1,7 +1,7 @@
 {
     "updated": "14.03.2026",
-    "location": "Wustrow",
-    "rooms": [
+    "place": "Wustrow",
+    "locations": [
         {
             "name": "HWR",
             "inventory": [
