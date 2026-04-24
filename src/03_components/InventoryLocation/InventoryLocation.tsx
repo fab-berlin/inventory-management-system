@@ -1,18 +1,17 @@
 import {InventoryLocationType} from "@/01_types";
-import InventoryDetail from "../InventoryDetail/InventoryDetail";
 import React from "react";
+import Headline from "@/03_components/atoms/Headline";
+import Link from "next/link";
+import Card from "@/03_components/atoms/Card/Card";
 
 const InventoryLocation = ({data}: { data: InventoryLocationType }) => {
 
-    return <section className="">
-        <h2 className="text-2xl font-bold">{data.name}</h2>
-        <ul className="flex flex-wrap flex-row gap-4">
-            {data.inventory.map((elem, index) =>
-                <React.Fragment key={index}>
-                    <InventoryDetail data={elem}/>
-                </React.Fragment>)}
-        </ul>
-    </section>
+    return <Card>
+        <Link href={`/roomDetail/${data.name}`} className="before:absolute before:inset-0">
+            <Headline text={data.name} level={'h2'} />
+            <p>Anzahl der Einträge: {data.inventory.length}</p>
+        </Link>
+    </Card>
 }
 
 export default InventoryLocation;

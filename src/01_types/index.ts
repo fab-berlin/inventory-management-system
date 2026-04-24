@@ -10,7 +10,9 @@ export type InventoryLocationType = {
 }
 
 export type InventoryDetailType = {
+    id: string;
     name: string;
     quantity: number | "wenig" | "mittel" | "viel";
     remarks: string;
+    updated?: string;
 }

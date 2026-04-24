@@ -13,7 +13,7 @@ const InventoryItem = () => {
         fetchData();
     }, []);
 
-    return <section className="">
+    return <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {data?.locations.map((elem: InventoryLocationType, index: number) => <React.Fragment
             key={index}><InventoryLocation
             data={elem}/></React.Fragment>)}
