@@ -1,35 +1,36 @@
 {
-    "updated": "14.03.2026",
-    "place": "Wustrow",
-    "locations": [
+  "updated": "14.03.2026",
+  "place": "Wustrow",
+  "locations": [
+    {
+      "name": "HWR",
+      "inventory": [
         {
-            "name": "HWR",
-            "inventory": [
-                {
-                    "id": "823746",
-                    "name": "Kaffee",
-                    "quantity": "wenig/mittel/viel/Anzahl",
-                    "remarks": "ist schon was älter, kann gerne ersetzt werden",
-                    "updated": "14.10.2015"
-                },
-                {
-                    "id": "9238479",
-                    "name": "Filtertüten",
-                    "quantity": "15",
-                    "remarks": ""
-                }
-            ]
+          "id": "823746",
+          "name": "Kaffee",
+          "quantity": "wenig/mittel/viel/Anzahl",
+          "remarks": "ist schon was älter, kann gerne ersetzt werden",
+          "updated": "14.10.2015"
         },
         {
-            "name": "Schlafzimmer",
-            "inventory": [
-                {
-                    "id": "290347039",
-                    "name": "Sodareiniger",
-                    "quantity": "halbvoll",
-                    "remarks": ""
-                }
-            ]
+          "id": "9238479",
+          "name": "Filtertüten",
+          "remarks": "",
+          "quantity": 15,
+          "updated": "2026-04-24T20:49:15.207Z"
         }
-    ]
+      ]
+    },
+    {
+      "name": "Schlafzimmer",
+      "inventory": [
+        {
+          "id": "290347039",
+          "name": "Sodareiniger",
+          "quantity": "halbvoll",
+          "remarks": ""
+        }
+      ]
+    }
+  ]
 }

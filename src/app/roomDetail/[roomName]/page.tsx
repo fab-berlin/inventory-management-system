@@ -1,6 +1,6 @@
 'use client'
 
-import {use, useEffect, useState} from "react";
+import {use, useEffect, useRef, useState} from "react";
 import useInventoryStore from "@/02_stores/inventory-store";
 import {InventoryDetailType} from "@/01_types";
 import Headline from "@/03_components/atoms/Headline";
@@ -25,7 +25,12 @@ export default function RoomDetailPage({params}: {
         retrieveRoomDetails();
     }, []);
 
-    const newEntryId = crypto.randomUUID();
+    const [id, setId] = useState<string | null>(null);
+
+    useEffect(() => {
+        setId(crypto.randomUUID());
+    }, []);
+
 
     return <div>
         <Headline text={roomName} level={'h1'}/>
@@ -40,10 +45,12 @@ export default function RoomDetailPage({params}: {
                     <Link className="block cursor-pointer" href={`/editInventory/${roomName}/${item.id}`}>edit</Link>
                 </Card>
             </React.Fragment>)}
+            {id &&
             <Card>
                 <Headline text={'neuen Eintrag anlegen'} level={'h3'} />
-                <Link className="block cursor-pointer" href={`/editInventory/${roomName}/${newEntryId}?newEntry`} >anlegen</Link>
+                <Link className="block cursor-pointer" href={`/editInventory/${roomName}/${id}?newEntry`} >anlegen</Link>
             </Card>
+            }
         </section>
     </div>
 }
