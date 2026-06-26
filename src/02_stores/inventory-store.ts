@@ -16,9 +16,10 @@ interface InventoryStore {
 const useInventoryStore = create<InventoryStore>((setState, getState) => ({
     data: null,
     fetchData: async () => {
-        const response = await fetch('/inventory.json', {cache: 'no-store'});
+        const response = await fetch('/api/inventory/read?place=Wustrow', { cache: 'no-store' });
+        if (response.status === 404) return; // DB leer, nichts tun
         const result = await response.json();
-        setState({data: result});
+        setState({ data: result });
     },
     getRoomData: (roomName: string): InventoryDetailType[] => {
         const data = getState().data;

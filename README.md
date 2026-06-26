@@ -1,52 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inventory Management System
 
-## Getting Started
+Inventarverwaltung für Ferienhaus Wustrow. Zeigt Räume und deren Artikel mit Bestand und Bemerkungen.
 
-First, run the development server:
+Gebaut mit Next.js, deployed auf Vercel, Datenbank bei Neon (Serverless Postgres).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+- **Frontend/Backend:** Next.js (TypeScript)
+- **Hosting:** Vercel (automatisches Deployment via GitHub Push)
+- **Datenbank:** Neon Serverless Postgres (verbunden über Vercel Storage Integration)
+
+## Datenstruktur
+
+Die gesamte Inventardatei wird als einzelnes JSONB-Dokument in der Datenbank gespeichert. `place` ist der Schlüssel (z.B. `"Wustrow"`) und repräsentiert eine komplette Inventardatei.
+
+```json
+{
+  "place": "Wustrow",
+  "updated": "2026-06-25",
+  "locations": [
+    {
+      "name": "HWR",
+      "inventory": [
+        {
+          "id": "823746",
+          "name": "Kaffee",
+          "quantity": 2,
+          "remarks": ""
+        }
+      ]
+    }
+  ]
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mehrere Objekte (z.B. ein zweites Ferienhaus) = weitere Zeilen in der DB mit anderem `place`-Wert.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Datenbankschema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sql
+CREATE TABLE inventory (
+  id SERIAL PRIMARY KEY,
+  place TEXT NOT NULL,
+  data JSONB NOT NULL,
+  updated_at TIMESTAMP DEFAULT NOW()
+);
 
-## Learn More
+ALTER TABLE inventory ADD CONSTRAINT inventory_place_unique UNIQUE (place);
+```
 
-To learn more about Next.js, take a look at the following resources:
+## API Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### `GET /api/inventory/read?place=Wustrow`
+Liest den kompletten Inventardatensatz für den angegebenen Ort.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### `POST /api/inventory/update`
+Schreibt den kompletten Inventardatensatz zurück (Last-Write-Wins).
 
-## Deploy on Vercel
+```json
+{ "data": { "place": "Wustrow", ... } }
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Lokale Entwicklung
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install
+npm run dev
+```
+
+Umgebungsvariablen lokal einrichten:
+
+```bash
+npx vercel link
+npx vercel env pull .env.local
+```
+
+Falls `env pull` die DB-Variable nicht zieht, `DATABASE_URL` manuell aus dem Neon-Dashboard in `.env.local` eintragen.
+
+`.env.local` benötigt:
+```
+DATABASE_URL=postgres://...
+```
+
+## Deployment
+
+Automatisch via GitHub — jeder Push auf `main` triggert ein neues Deployment auf Vercel. `DATABASE_URL` ist in Vercel bereits als Umgebungsvariable gesetzt.
+
+## Bekannte Einschränkungen
+
+- **Kein Conflict-Handling:** Wenn zwei Personen gleichzeitig speichern, gewinnt der letzte Speichervorgang. Für den Anwendungsfall (kleine Gruppe) akzeptabel, kann später mit einem `updated_at`-Check abgesichert werden.
 
 ## Route definition
 
-### Root route - view only
+### Root route — view only
+- Zeigt alle Räume/Locations
+- Pro Raum wird nur die Anzahl der Artikel angezeigt
 
-* display all rooms
-* one room or place is a group and gives only the number of items 
+### Room detail route — view only
+- Zeigt alle Artikel eines Raums
+- Raum-ID als Slug in der Route
 
-### Room detail route - view only
-
-* displays all items in one room 
-* room id as slug in route
-
-### Inventory item detail route - view and edit mode (?)
-
-* displays all information of the item
+### Inventory item detail route — view & edit
+- Zeigt alle Details eines Artikels
+- Bearbeitung möglich
